@@ -4,20 +4,20 @@ document.addEventListener("DOMContentLoaded", function() {
 	var playing = false;
 	const MOVES = 0;
 	const TIMES_TRIED = 0;
+	var n;
 
 
 	
     document.getElementById("puzzlearea").className = "puzzlepiece";
 	var piecesArray = document.querySelectorAll("#puzzlearea > div"); 
 	var pieces = document.querySelectorAll("#puzzlearea > div");
-    Setup(pieces); //call Setup() 
-
-
-    
+	var col = document.getElementById("puzzlearea");
+    Setup(pieces); //call Setup()     
     shuffle(piecesArray); //call shuffle()
+    check(pieces);	//call check function
+	Complete(pieces); //call Complete function
 
-     check(pieces);	
-	Complete(pieces);
+	
 
 
 
@@ -50,24 +50,30 @@ function Setup(p){
 	/*Moves the pieces*/
 	console.log("here: " + pieces[0].innerHTML); 
   for (var i = 0; i < pieces.length; i++) { 
-     pieces[i].addEventListener("click", function () { 
+
+  	pieces[i].addEventListener("click", function () { 
+
          var res = check([this.style.left, this.style.top]); 
          switch (res) { 
              case 1: 
                  this.style.top = Number(this.style.top.slice(0, -2)) + 100 + "px";
                  MOVES++; 
+                 TIMES_TRIED++;
                  break; 
              case 2:
              	  this.style.top = Number(this.style.top.slice(0, -2)) - 100 + "px";
              	  MOVES++;
+             	  TIMES_TRIED++;
              	  break;
              case 3:
              	  this.style.left = Number(this.style.left.slice(0, -2)) +100 + "px";
              	  MOVES++;
+             	  TIMES_TRIED++;
              	  break;
              case 4:
              	  this.style.left = Number(this.style.left.slice(0, -2)) - 100 + "px";	
-             	  MOVES++;             	    	      
+             	  MOVES++;
+             	  TIMES_TRIED++;             	    	      
 
             default: 
                  console.log("event switch error."); 
@@ -76,40 +82,54 @@ function Setup(p){
      });
  }
 
-
-
-
 /* Shuffle the puzzle pieces*/
-	function shuffle(pieces){ 
-		var count = pieces.length;
+	function shuffle(p){ 
 		
-		//var s = 0;
 		
 		var newArray = [];
 
-		for(var x = 0; x<pieces.length;x++){
-			newArray.push(pieces[x]);
+		for(var x = 0; x<p.length;x++){
+			newArray.push(p[x]);
 		}
 		console.log(newArray);
+
 		var shuffle = document.getElementById("shufflebutton");
 		shuffle.addEventListener("click", function(){ 
-			while (count > 0 ) {
-				var ran  = Math.floor(Math.random() * count);
-				count--;
-				var temp = newArray[count];
-				newArray[count]= newArray[ran];
+		for(var s = 0; s < newArray.length; s++){ 
+				do{
+					var ran  = Math.floor(Math.random() * pieces.length);
+				
+				} 
+				while (ran == s);
+
+				var temp = newArray[s];
+				newArray[s] = newArray[ran];
 				newArray[ran] = temp;				
 			}
-									
-			playing = true ;
-			Setup(newArray);
 
-			});
+			playing = true; 
+
+			Setup(newArray); 
 			var begin = new Date();
-			var n = begin.getSeconds();
-			MOVES;
+
+			n = begin.getSeconds();
+			MOVES; 
+
+
+			
+
+});
+
+
+
+
 
 		}
+		
+
+
+
+
 	
 
 
@@ -152,14 +172,16 @@ function check(pos) {
  
 
 
-/*Add class to movaable pieces*/
-function move(){
-	if((check($(this)) == 1 || 2||3||4)){
-		$(this).addClass("movablepiece");
+/*Add class to movable pieces*/
+function move(c){ 
+		for(var x = 0; x < c.length; x++){
+		c[x].setAttribute("class","movablepiece");
+  		console.log("work!!");
+  		console.log(x);
+
 	}
-	else {
-		$(this).removeClass("movablepiece");
-	}
+
+	
 }
 
 
@@ -174,6 +196,7 @@ function move(){
 		for(var x = 0; x<pieces.length;x++){ 
 			if (com[x].style.left == left && com[x].style.top == top){
 				done = true;
+				Time();
 			}
 			else {
 				done = false;
@@ -191,8 +214,11 @@ function move(){
 		var Duration;
 		var newScores;
 
-		Duration.innerHTML = "Number Of Moves Made : " +MOVES + "Time Taken : " +tim + "seconds";
-	    newScores.innerHTML = "Tries = " +TIMES_TRIED + "and" + MOVES + "moves in" + tim + "seconds"; 
+		Duration = "Number Of Moves Made : " + MOVES + " " + "Time Taken : " + tim +  "seconds";
+	    newScore = "Tries = " + TIMES_TRIED + " " + "and" + " "+ MOVES +" "+ "moves in" + tim + "seconds"; 
+	    console.log(Duration);
+	    console.log(newScore);
+
 	}
 
 		
