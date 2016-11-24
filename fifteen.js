@@ -1,9 +1,13 @@
 /*I added the extra feature of Game time*/
 
+var emptyX = 300;
+var emptyY = 300;
+var  MOVES = 0;
+var TIMES_TRIED = 0;
+
 document.addEventListener("DOMContentLoaded", function() { 
 	var playing = false;
-	const MOVES = 0;
-	const TIMES_TRIED = 0;
+	
 	var n;
 
 
@@ -14,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	var col = document.getElementById("puzzlearea");
     Setup(pieces); //call Setup()     
     shuffle(piecesArray); //call shuffle()
-    check(pieces);	//call check function
+    //check(pieces);	//call check function
 	Complete(pieces); //call Complete function
 
 	
@@ -48,7 +52,7 @@ function Setup(p){
 	}
 
 	/*Moves the pieces*/
-	console.log("here: " + pieces[0].innerHTML); 
+	//console.log("here: " + pieces[0].innerHTML); 
   for (var i = 0; i < pieces.length; i++) { 
 
   	pieces[i].addEventListener("click", function () { 
@@ -104,7 +108,7 @@ function Setup(p){
 
 				var temp = newArray[s];
 				newArray[s] = newArray[ran];
-				newArray[ran] = temp;				
+				newArray[ran]= temp;				
 			}
 
 			playing = true; 
@@ -134,31 +138,35 @@ function Setup(p){
 
 
 	//check if piece can move
-function check(pos) { 
+function check(pos) { // only accepts numbers
      var var1 = pos[0].slice(0, -2); 
      var var2 = pos[1].slice(0, -2); 
      var counter = 0;
 
      console.log(pos[0]);
+     console.log(pos[1]);
+
      var1 = Number(var1); 
      var2 = Number(var2); 
-     empx = 300;
-     empy = 300;
      var result; 
      do{ 
-         if ((var1 + 100) == empx && (var2) == empy) { 
+         if ((var1 + 100) == emptyX && (var2) == emptyY) { //moves tiles right
+         	console.log(" case 1");
              result = 1; 
              break; 
          } 
-         if ((var1 - 100) == empx && (var2) == empy) { 
+         if ((var1 - 100) == emptyX && (var2) == emptyY) { //moves tiles left
+         	console.log(" case 2");
              result = 2; 
              break; 
          } 
-         if ((var1) == empx && (var2 - 100) == empy) { 
+         if ((var1) == emptyX && (var2 - 100) == emptyY) { // moves down
+         	console.log(" case 3");
              result = 3; 
              break; 
          } 
-         if ((var1) == empx && (var2 + 100) == empy) { 
+         if ((var1) == emptyX && (var2 + 100) == emptyY) { // moves up
+         	console.log(" case 4");
              result = 4; 
              break; 
          } 
@@ -216,6 +224,8 @@ function move(c){
 
 		Duration = "Number Of Moves Made : " + MOVES + " " + "Time Taken : " + tim +  "seconds";
 	    newScore = "Tries = " + TIMES_TRIED + " " + "and" + " "+ MOVES +" "+ "moves in" + tim + "seconds"; 
+	    Duration.innerHTML;
+	    newScore.innerHTML;
 	    console.log(Duration);
 	    console.log(newScore);
 
